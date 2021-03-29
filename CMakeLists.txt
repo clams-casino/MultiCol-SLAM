@@ -38,10 +38,26 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -O3 -march=native -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -O3 -march=native -std=c++11")
 ENDIF()
 
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
-
-find_package(OpenCV REQUIRED)
+# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
+# message(STATUS "HI!!!!")
+# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV)
+# message(STATUS ${CMAKE_MODULE_PATH})
+# find_package(OpenCV 3.4 EXACT REQUIRED PATHS "${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV")
 find_package(Pangolin REQUIRED)
+
+
+# ==============================================================================
+# Search OpenCV
+# ============================================================================== 
+# SET(OpenCV_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/include)
+# SET(OpenCV_LIBRARIES opengv)
+# MESSAGE("OpenCV include DIR ${OpenCV_INCLUDE_DIR}")
+# INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIR})
+
+# SET(OpenCV_INCLUDE_TEST ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build)
+
+# INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_TEST})
+
 
 # ==============================================================================
 # Search OpenGV
@@ -119,6 +135,15 @@ ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
 ${PROJECT_SOURCE_DIR}/ThirdParty
 ${PROJECT_SOURCE_DIR}/ThirdParty/g2o
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/core/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/calib3d/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgproc/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgcodecs/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/highgui/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/features2d/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/flann/include
 ${Pangolin_INCLUDE_DIRS}
 )
 
@@ -169,6 +194,12 @@ SET (G2OLIBS ${PROJECT_SOURCE_DIR}/ThirdParty/g2o/lib/libg2o.so)
 SET (DBOW2LIBS ${PROJECT_SOURCE_DIR}/ThirdParty/DBoW2/lib/libDBoW2.so)
 SET (OPENGVLIBS ${PROJECT_SOURCE_DIR}/ThirdParty/OpenGV/build/lib/librandom_generators.a
                 ${PROJECT_SOURCE_DIR}/ThirdParty/OpenGV/build/lib/libopengv.a)
+SET (OPENCVLIBS ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_core.so
+                ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_calib3d.so
+                ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_imgproc.so
+                ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_imgcodecs.so
+                ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_highgui.so
+                ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_features2d.so)
 ENDIF()
 
 IF(WIN32)
@@ -185,7 +216,7 @@ debug ${OPENGVLIBS_DEBUG}
 debug ${RANDOMGENLIBS_DEBUG})
 ELSE()
 target_link_libraries(${PROJECT_NAME}
-${OpenCV_LIBS}
+${OPENCVLIBS}
 ${Pangolin_LIBRARIES}
 ${G2OLIBS}
 ${DBOW2LIBS}
