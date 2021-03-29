@@ -30,11 +30,19 @@ set(SRCS_DUTILS
   DUtils/Random.cpp
   DUtils/Timestamp.cpp)
 
-find_package(OpenCV REQUIRED)
+# find_package(OpenCV REQUIRED)
+
+SET(OPENCV_INCLUDE_DIRS
+${PROJECT_SOURCE_DIR}/../OpenCV/include
+${PROJECT_SOURCE_DIR}/../OpenCV/build
+${PROJECT_SOURCE_DIR}/../OpenCV/modules/core/include
+)
+
+SET (OPENCVLIBS ${PROJECT_SOURCE_DIR}/../OpenCV/build/lib/libopencv_core.so)
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${OPENCV_INCLUDE_DIRS})
 add_library(DBoW2 ${DBoW2_LIB_TYPE} ${SRCS_DBOW2} ${SRCS_DUTILS})
-target_link_libraries(DBoW2 ${OpenCV_LIBS})
+target_link_libraries(DBoW2 ${OPENCVLIBS})
 
