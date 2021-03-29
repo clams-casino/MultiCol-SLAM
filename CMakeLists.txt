@@ -25,30 +25,25 @@ ENDIF()
 
 SET (MCSSLAM_LIB_TYPE SHARED)
 
+
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -O3 -march=native -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -O3 -march=native -std=c++11")
 
-# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
-# message(STATUS "HI!!!!")
-# LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV)
-# message(STATUS ${CMAKE_MODULE_PATH})
-# find_package(OpenCV 3.4 EXACT REQUIRED PATHS "${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV")
-find_package(Pangolin REQUIRED)
+
+# ==============================================================================
+# Build Pangolin targets
+# ============================================================================== 
+add_subdirectory(${PROJECT_SOURCE_DIR}/ThirdParty/Pangolin)
+
 
 
 # ==============================================================================
-# Search OpenCV
+# Link to OpenCV in Third Party directory
 # ============================================================================== 
-# SET(OpenCV_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/include)
-# SET(OpenCV_LIBRARIES opengv)
-# MESSAGE("OpenCV include DIR ${OpenCV_INCLUDE_DIR}")
-# INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIR})
 
-# SET(OpenCV_INCLUDE_TEST ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build)
 
-# INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_TEST})
 
 
 # ==============================================================================
@@ -92,6 +87,18 @@ IF(NOT DEFINED EIGEN_INCLUDE_DIR_HINTS)
 ENDIF()
 
 
+SET(OPENCV_INCLUDE_DIRS
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/core/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/calib3d/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgproc/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgcodecs/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/highgui/include
+${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/features2d/include
+)
+
+
 SET(MultiColHeaders
 include/cam_model_omni.h
 include/cam_system_omni.h
@@ -127,15 +134,7 @@ ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
 ${PROJECT_SOURCE_DIR}/ThirdParty
 ${PROJECT_SOURCE_DIR}/ThirdParty/g2o
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/core/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/calib3d/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgproc/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/imgcodecs/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/highgui/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/features2d/include
-${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/modules/flann/include
+${OPENCV_INCLUDE_DIRS}
 ${Pangolin_INCLUDE_DIRS}
 )
 
@@ -185,8 +184,8 @@ SET (OPENCVLIBS ${PROJECT_SOURCE_DIR}/ThirdParty/OpenCV/build/lib/libopencv_core
 
 
 target_link_libraries(${PROJECT_NAME}
+pangolin
 ${OPENCVLIBS}
-${Pangolin_LIBRARIES}
 ${G2OLIBS}
 ${DBOW2LIBS}
 ${OPENGVLIBS}
