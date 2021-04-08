@@ -28,9 +28,15 @@ SET (MCSSLAM_LIB_TYPE SHARED)
 
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
 
+
+IF(APPLE)
+MESSAGE("Building on Mac - NOT linking OpenMP")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -march=native -std=c++11")
+ELSE()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -O3 -march=native -std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -O3 -march=native -std=c++11")
-
+ENDIF()
 
 # ==============================================================================
 # Build Pangolin targets

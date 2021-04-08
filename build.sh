@@ -1,3 +1,13 @@
+if [ "$1" = "--apple" ]; then
+  echo "Building on Mac"
+  APPLE="true"
+elif [ "$1" = "" ]; then
+  APPLE="false"
+else 
+  echo "Invalid flag. Usage: --apple for building on Mac"
+  exit 1
+fi
+
 echo "Configuring and building Thirdparty/OpenCV ..."
 
 cd ThirdParty/OpenCV
@@ -61,5 +71,6 @@ cd ../../../
 echo $(pwd)
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release \
+-DAPPLE=${APPLE}
 make -j4
